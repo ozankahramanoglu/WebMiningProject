@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</head>
+<body">
+<nav class="navbar navbar-default navbar navbar-inverse">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">CENG 3528 Web Mining Final Project</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+          <li><a href="/"> Home Page</a> </li>
+          <li><a href="/stat">Statistics </a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="https://www.whenisthenextsteamsale.com/">When is the next Steam Sale?</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+
+
+{% if latest_games_list %}
+<div class="jumbotron" style="margin: 3%">
+  <h1 style="text-align: center">Welcome to Steam Discount Revealer</h1>
+  <p style="text-align: center">You can see the current discount but if you need more information go to details page</p>
+</div>
+
+    <div class="list-group" style="margin-left: 10%">
+        {% for game in latest_games_list%}
+            <div class="col-sm-2" style="height:500px ;width: 300px">
+                <div class="thumbnail">
+                    <img src="{{ game.image }}" alt="Probably there is no cover photo for this game " height="400" width=400>
+                    <div class="caption">
+                        <h3>{{ game.title }}</h3>
+                        <p>{{ game.short_desc }}</p>
+                        <p><a href="{% url 'detail' game.game_id %}" class="btn btn-primary" role="button">Details</a>
+                            <a href="https://store.steampowered.com/app/{{ game.game_id }}" class="btn btn-default" role="button">Store Page</a>
+                            {% if game.discount == "TRUE" %}
+                            <a href="#" class="btn btn_red disabled" role="button">{{ game.discount_ratio }}</a>
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>Whoops we didn't coded this page <br> Please go back to <span><a href="/">Go back</a></span> to homepage.</p>
+{% endif %}
+
+<nav aria-label="Page navigation">
+  <ul class="pagination" style="position:fixed;!important; top: 60.5%!important; right:83% ;transform: rotate(90deg);">
+      {% for number in page_number %}
+    <li class="page-item"><a class="page-item" style="text-align:left!important;width:9%!important; justify-content: center; transform: rotate(270deg)" href="{% url 'page' number %}">{{ number  }}</a></li>
+      {% endfor %}
+  </ul>
+</nav>
+
+
+
+
+
+</body>
+
+</html>
